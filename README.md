@@ -1,4 +1,4 @@
-wordnik-cs
+Wordnik C#
 ==========
 
 Wordnik C# library
