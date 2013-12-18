@@ -17,6 +17,7 @@ namespace Wordnik {
 
         /// <summary>
         /// Returns examples for a word.
+        /// This overload sets includeDuplicates and useCanonical to False.
         /// </summary>
         /// <param name="word">The word to return examples for.</param>
         /// <returns>ExampleSearchResults in the form of an async Task.</returns>
@@ -75,9 +76,22 @@ namespace Wordnik {
             return null;
         }
 
+        /// <summary>
+        /// Given a word as a string, returns the WordObject that represents it.
+        /// Assumes useCanonical and includeSuggestions to be False.
+        /// </summary>
+        /// <param name="word">String value of WordObject to return</param>
+        /// <returns>WordObject in the form of an async Task</returns>
         public async Task<WordObject> GetWord(string word){
             return await this.GetWord(word,false,false);
         }
+        /// <summary>
+        /// Given a word as a string, returns the WordObject that represents it
+        /// </summary>
+        /// <param name="word">String value of WordObject to return</param>
+        /// <param name="useCanonical">If true will try to return the correct word root ('cats' -> 'cat'). If false returns exactly what was requested.</param>
+        /// <param name="includeSuggestions">Return suggestions (for correct spelling, case variants, etc.)</param>
+        /// <returns>WordObject in the form of an async Task</returns>
         public async Task<WordObject> GetWord(string word, bool useCanonical, bool includeSuggestions){
             if(word == null || String.IsNullOrWhiteSpace(word)){
                 throw new ArgumentException("Word argument cannot be null or empty.");
@@ -104,13 +118,3 @@ namespace Wordnik {
         }
     }
 }
-
-
-/**
-         * getWord
-         * Given a word as a string, returns the WordObject that represents it
-* word, string: String value of WordObject to return (required)
-* useCanonical, string: If true will try to return the correct word root ('cats' -&gt; 'cat'). If false returns exactly what was requested. (optional)
-* includeSuggestions, string: Return suggestions (for correct spelling, case variants, etc.) (optional)
-* @return WordObject
-         */
