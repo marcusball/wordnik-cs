@@ -65,10 +65,37 @@ namespace Wordnik {
                 queryParams.Add("limit",limit.ToString());
             }
 
-            Console.Out.WriteLine("Hi");
             ApiResponse response = await this.CallAPI(resourcePath,ApiMethod.GET,queryParams,null,null);
             try {
                 return JsonConvert.DeserializeObject<ExampleSearchResults>(response.ResponseText);
+            }
+            catch (JsonException e) {
+                Console.Error.WriteLine("Wordnik WordApi JsonException caught: [{0}] {1}", e.HResult, e.Message);
+            }
+            return null;
+        }
+
+        public async Task<WordObject> GetWord(string word){
+            return await this.GetWord(word,false,false);
+        }
+        public async Task<WordObject> GetWord(string word, bool useCanonical, bool includeSuggestions){
+            if(word == null || String.IsNullOrWhiteSpace(word)){
+                throw new ArgumentException("Word argument cannot be null or empty.");
+            }
+            string resourcePath = "/word.{0}/{1}";
+            resourcePath = String.Format(resourcePath,"json",this.ToPathValue(word));
+
+            Dictionary<string,string> queryParams = new Dictionary<string,string>();
+            if(includeSuggestions){
+                queryParams.Add("includeSuggestions","true");
+            }
+            if(useCanonical){
+                queryParams.Add("useCanonical","true");
+            }
+
+            ApiResponse response = await this.CallAPI(resourcePath,ApiMethod.GET,queryParams,null,null);
+            try {
+                return JsonConvert.DeserializeObject<WordObject>(response.ResponseText);
             }
             catch (JsonException e) {
                 Console.Error.WriteLine("Wordnik WordApi JsonException caught: [{0}] {1}", e.HResult, e.Message);
@@ -80,16 +107,10 @@ namespace Wordnik {
 
 
 /**
-         * getExamples
-         * Returns examples for a word
-* word, string: Word to return examples for (required)
-* includeDuplicates, string: Show duplicate examples from different sources (optional)
+         * getWord
+         * Given a word as a string, returns the WordObject that represents it
+* word, string: String value of WordObject to return (required)
 * useCanonical, string: If true will try to return the correct word root ('cats' -&gt; 'cat'). If false returns exactly what was requested. (optional)
-* skip, int: Results to skip (optional)
-* limit, int: Maximum number of results to return (optional)
-* @return ExampleSearchResults
-        
-
-                  $responseObject = $this->apiClient->deserialize($response,
-                   'ExampleSearchResults');
-                  return $responseObject; */
+* includeSuggestions, string: Return suggestions (for correct spelling, case variants, etc.) (optional)
+* @return WordObject
+         */

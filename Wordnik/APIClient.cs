@@ -88,7 +88,6 @@ namespace Wordnik
             }
 
             try{
-                Console.Out.WriteLine("Wat");
                 using (HttpWebResponse response = (HttpWebResponse)(request.GetResponse())) {
                     using (StreamReader streamReader = new StreamReader(response.GetResponseStream())) {
                         string responseText = streamReader.ReadToEnd();
