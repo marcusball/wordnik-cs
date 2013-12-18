@@ -20,12 +20,12 @@ namespace Wordnik {
 
         /// <summary>
         /// Returns examples for a word.
-        /// This overload sets includeDuplicates and useCanonical to False.
+        /// This overload sets includeDuplicates to false and useCanonical to true.
         /// </summary>
         /// <param name="word">The word to return examples for.</param>
         /// <returns>ExampleSearchResults in the form of an async Task.</returns>
         public async Task<ExampleSearchResults> GetExamples(string word) {
-            return await this.GetExamples(word, false, false, 0, 0);
+            return await this.GetExamples(word, false, true, 0, 0);
         }
 
         /// <summary>
@@ -81,12 +81,12 @@ namespace Wordnik {
 
         /// <summary>
         /// Given a word as a string, returns the WordObject that represents it.
-        /// Assumes useCanonical and includeSuggestions to be False.
+        /// Assumes useCanonical to be true and includeSuggestions to be False.
         /// </summary>
         /// <param name="word">String value of WordObject to return</param>
         /// <returns>WordObject in the form of an async Task</returns>
         public async Task<WordObject> GetWord(string word){
-            return await this.GetWord(word,false,false);
+            return await this.GetWord(word,true,false);
         }
         /// <summary>
         /// Given a word as a string, returns the WordObject that represents it
@@ -122,23 +122,23 @@ namespace Wordnik {
 
         /// <summary>
         /// Return definitions for a word
-        /// This overload sends sourceDictionary and partOfSpeech as empty string, limit as zero, and useCanonical and includeTags as false.
+        /// This overload sends sourceDictionary and partOfSpeech as empty string, limit as zero, useCanonical as true, and includeTags as false.
         /// </summary>
         /// <param name="word">Word to return definitions for</param>
         /// <returns>A List of Definition objects in the form of an async Task</returns>
         public async Task<List<Definition>> GetDefinitions(string word){
-            return await this.GetDefinitions(word,"","",0,false,false);
+            return await this.GetDefinitions(word,"","",0,true,false);
         }
 
         /// <summary>
         /// Return definitions for a word
-        /// This overload sends sourceDictionary and partOfSpeech as empty string, limit as zero, and useCanonical as false.
+        /// This overload sends sourceDictionary and partOfSpeech as empty string, limit as zero, and useCanonical as true.
         /// </summary>
         /// <param name="word">Word to return definitions for</param>
         /// <param name="includeTags">Return a closed set of XML tags in response</param>
         /// <returns>A List of Definition objects in the form of an async Task</returns>
         public async Task<List<Definition>> GetDefinitions(string word, bool includeTags){
-            return await this.GetDefinitions(word,"","",0,false,includeTags);
+            return await this.GetDefinitions(word,"","",0,true,includeTags);
         }
 
         /// <summary>
@@ -168,14 +168,14 @@ namespace Wordnik {
 
         /// <summary>
         /// Return definitions for a word
-        /// This overload sends sourceDictionary as an empty string, limit as zero, and useCanonical as false.
+        /// This overload sends sourceDictionary as an empty string, limit as zero, and useCanonical as true.
         /// </summary>
         /// <param name="word">Word to return definitions for</param>
         /// <param name="partOfSpeech">CSV list of part-of-speech types</param>
         /// <param name="includeTags">Return a closed set of XML tags in response</param>
         /// <returns>A List of Definition objects in the form of an async Task</returns>
         public async Task<List<Definition>> GetDefinitions(string word, string partOfSpeech, bool includeTags){
-            return await this.GetDefinitions(word,partOfSpeech,"",0,false,includeTags);
+            return await this.GetDefinitions(word,partOfSpeech,"",0,true,includeTags);
         }
 
         /// <summary>
@@ -207,19 +207,19 @@ namespace Wordnik {
 
         /// <summary>
         /// Return definitions for a word
-        /// This overload will set the limit to zero, and useCanonical and includeTags to false.
+        /// This overload will set the limit to zero, useCanonical to true, and includeTags to false.
         /// </summary>
         /// <param name="word">Word to return definitions for</param>
         /// <param name="partOfSpeech">CSV list of part-of-speech types</param>
         /// <param name="sourceDictionaries">Source dictionary to return definitions from. If 'all' is received, results are returned from all sources. If multiple values are received (e.g. 'century,wiktionary'), results are returned from the first specified dictionary that has definitions. If left blank, results are returned from the first dictionary that has definitions. By default, dictionaries are searched in this order: ahd, wiktionary, webster, century, wordnet</param>
         /// <returns>A List of Definition objects in the form of an async Task</returns>
         public async Task<List<Definition>> GetDefinitions(string word, string partOfSpeech, string sourceDictionaries) {
-            return await this.GetDefinitions(word, partOfSpeech, sourceDictionaries, 0, false, false);
+            return await this.GetDefinitions(word, partOfSpeech, sourceDictionaries, 0, true, false);
         }
 
         /// <summary>
         /// Return definitions for a word
-        /// This overload will set useCanonical and includeTags to false.
+        /// This overload will set useCanonical to true and includeTags to false.
         /// </summary>
         /// <param name="word">Word to return definitions for</param>
         /// <param name="partOfSpeech">CSV list of part-of-speech types</param>
@@ -227,7 +227,7 @@ namespace Wordnik {
         /// <param name="limit">Maximum number of results to return</param>
         /// <returns>A List of Definition objects in the form of an async Task</returns>
         public async Task<List<Definition>> GetDefinitions(string word, string partOfSpeech, string sourceDictionaries, int limit) {
-            return await this.GetDefinitions(word, partOfSpeech, sourceDictionaries, limit, false, false);
+            return await this.GetDefinitions(word, partOfSpeech, sourceDictionaries, limit, true, false);
         }
         
         
@@ -268,6 +268,44 @@ namespace Wordnik {
             ApiResponse response = await this.CallAPI(resourcePath,ApiMethod.GET,queryParams,null,null);
             try {
                 return JsonConvert.DeserializeObject<List<Definition>>(response.ResponseText);
+            }
+            catch (JsonException e) {
+                Console.Error.WriteLine("Wordnik WordApi JsonException caught: [{0}] {1}", e.HResult, e.Message);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Returns a top example for a word
+        /// This overload will send useCanonical as true.
+        /// </summary>
+        /// <param name="word">Word for which to fetch examples</param>
+        /// <returns>An Example in the form of an async Task</returns>
+        public async Task<Example> GetTopExample(string word){
+            return await this.GetTopExample(word,true);
+        }
+
+        /// <summary>
+        /// Returns a top example for a word
+        /// </summary>
+        /// <param name="word">Word for which to fetch examples</param>
+        /// <param name="useCanonical">If true will try to return the correct word root ('cats' -> 'cat'). If false returns exactly what was requested.</param>
+        /// <returns>An Example in the form of an async Task</returns>
+        public async Task<Example> GetTopExample(string word, bool useCanonical){
+            if(word == null || String.IsNullOrWhiteSpace(word)){
+                throw new ArgumentException("Word argument cannot be null or empty.");
+            }
+            string resourcePath = "/word.{0}/{1}/topExample";
+            resourcePath = String.Format(resourcePath,"json",this.ToPathValue(word));
+
+            Dictionary<string,string> queryParams = new Dictionary<string,string>();
+            if(useCanonical){
+                queryParams.Add("useCanonical","true");
+            }
+
+            ApiResponse response = await this.CallAPI(resourcePath,ApiMethod.GET,queryParams,null,null);
+            try {
+                return JsonConvert.DeserializeObject<Example>(response.ResponseText);
             }
             catch (JsonException e) {
                 Console.Error.WriteLine("Wordnik WordApi JsonException caught: [{0}] {1}", e.HResult, e.Message);

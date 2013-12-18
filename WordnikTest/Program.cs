@@ -12,15 +12,14 @@ namespace WordnikTest {
         static void Main(string[] args) {
             WordApi test = new WordApi(myAPIkey, "http://api.wordnik.com/v4");
 
-            Task<WordObject> output1 = test.GetWord("dog",true,true);
+            var output1 = test.GetTopExample("dog");
             output1.ContinueWith((t) => {
-                WordObject word = t.Result;
-                Console.Out.WriteLine("Word: {0}\n", word.CanonicalForm);
+                var output = t.Result;
             });
 
             Console.Out.WriteLine("\n{0}\n","-".PadRight(20, '-'));
 
-            Task<List<Definition>> output2 = test.GetDefinitions("dog","","all");
+            Task<List<Definition>> output2 = test.GetDefinitions("dog");
             output2.ContinueWith((t) => {
                 List<Definition> definitions = t.Result;
                 foreach (Definition def in definitions) {
