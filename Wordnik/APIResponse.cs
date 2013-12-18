@@ -7,7 +7,7 @@ using System.Net;
 using System.Web.Script.Serialization;
 
 namespace Wordnik {
-    public class APIResponse {
+    public class ApiResponse {
         public HttpStatusCode Status { get; set; }
         public Object Deserialized { get; set; }
         public string ResponseText { get; set; }

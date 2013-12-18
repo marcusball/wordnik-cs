@@ -48,7 +48,16 @@
   <ItemGroup>
     <Compile Include="APIClient.cs" />
     <Compile Include="APIResponse.cs" />
+    <Compile Include="Models\ContentProvider.cs" />
+    <Compile Include="Models\Example.cs" />
+    <Compile Include="Models\ExampleSearchResults.cs" />
+    <Compile Include="Models\Facet.cs" />
+    <Compile Include="Models\FacetValue.cs" />
+    <Compile Include="Models\ScoredWord.cs" />
+    <Compile Include="Models\Sentence.cs" />
+    <Compile Include="Models\WordObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WordApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
