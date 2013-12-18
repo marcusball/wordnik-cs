@@ -18,13 +18,25 @@ namespace WordnikTest {
                 Console.Out.WriteLine("Word: {0}\n", word.CanonicalForm);
             });
 
-            Task<ExampleSearchResults> output2 = test.GetExamples("dog");
+            Console.Out.WriteLine("\n{0}\n","-".PadRight(20, '-'));
+
+            Task<List<Definition>> output2 = test.GetDefinitions("dog","","all");
             output2.ContinueWith((t) => {
+                List<Definition> definitions = t.Result;
+                foreach (Definition def in definitions) {
+                    Console.Out.WriteLine("{0} ({1}):\n{2}\n",def.Word, def.PartOfSpeech, def.Text);
+                }
+            });
+
+            Console.Out.WriteLine("\n{0}\n", "-".PadRight(20, '-'));
+
+            /*Task<ExampleSearchResults> output3 = test.GetExamples("dog");
+            output3.ContinueWith((t) => {
                 List<Example> examples = t.Result.Examples;
                 foreach (Example e in examples) {
                     Console.Out.WriteLine("\"{0}\"\n— {1} ({2})\n", e.Text, e.Title, e.Year);
                 }
-            });
+            });*/
 
 
 

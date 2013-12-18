@@ -48,11 +48,16 @@
   <ItemGroup>
     <Compile Include="APIClient.cs" />
     <Compile Include="APIResponse.cs" />
+    <Compile Include="Models\Citation.cs" />
     <Compile Include="Models\ContentProvider.cs" />
+    <Compile Include="Models\Definition.cs" />
     <Compile Include="Models\Example.cs" />
     <Compile Include="Models\ExampleSearchResults.cs" />
+    <Compile Include="Models\ExampleUsage.cs" />
     <Compile Include="Models\Facet.cs" />
     <Compile Include="Models\FacetValue.cs" />
+    <Compile Include="Models\Label.cs" />
+    <Compile Include="Models\Related.cs" />
     <Compile Include="Models\ScoredWord.cs" />
     <Compile Include="Models\Sentence.cs" />
     <Compile Include="Models\WordObject.cs" />

@@ -12,8 +12,8 @@ namespace Wordnik
 {
     public class ApiClient
     {
-        private string _apiKey;
-        private string _apiServer;
+        protected string _apiKey;
+        protected string _apiServer;
 
         /// <summary>
         /// Constructor for the Wordnik API client
@@ -23,6 +23,15 @@ namespace Wordnik
         public ApiClient(string apiKey, string apiServer){
             this._apiKey = apiKey;
             this._apiServer = apiServer;
+        }
+
+        public ApiClient(ApiClient clone) {
+            clone.CopyTo(this);
+        }
+
+        protected void CopyTo(ApiClient target) {
+            target._apiKey = this._apiKey;
+            target._apiServer = this._apiServer;
         }
 
         /// <summary>
