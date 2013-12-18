@@ -312,5 +312,85 @@ namespace Wordnik {
             }
             return null;
         }
+
+        /// <summary>
+        /// Given a word as a string, returns relationships from the Word Graph
+        /// This overload leaves relationshipTypes empty, and sets useCanonical to true and limitPerRelationshipType to zero.
+        /// </summary>
+        /// <param name="word">Word for which to fetch examples</param>
+        /// <returns>A List of Related words in the the form of an async Task</returns>
+        public async Task<List<Related>> GetRelatedWords(string word) {
+            return await this.GetRelatedWords(word, "", true, 0);
+        }
+
+        /// <summary>
+        /// Given a word as a string, returns relationships from the Word Graph
+        /// This overload leaves relationshipTypes empty, and sets useCanonical to true.
+        /// </summary>
+        /// <param name="word">Word for which to fetch examples</param>
+        /// <param name="limitPerRelationshipType">Restrict to the supplied relationship types</param>
+        /// <returns>A List of Related words in the the form of an async Task</returns>
+        public async Task<List<Related>> GetRelatedWords(string word, int limitPerRelationshipType) {
+            return await this.GetRelatedWords(word, "", true, limitPerRelationshipType);
+        }
+
+        /// <summary>
+        /// Given a word as a string, returns relationships from the Word Graph
+        /// This overload leaves relationshipTypes empty, and sets limitPerRelationshipType to zero.
+        /// </summary>
+        /// <param name="word">Word for which to fetch examples</param>
+        /// <param name="useCanonical">If true will try to return the correct word root ('cats' -> 'cat'). If false returns exactly what was requested.</param>
+        /// <returns>A List of Related words in the the form of an async Task</returns>
+        public async Task<List<Related>> GetRelatedWords(string word, bool useCanonical) {
+            return await this.GetRelatedWords(word, "", useCanonical, 0);
+        }
+
+        /// <summary>
+        /// Given a word as a string, returns relationships from the Word Graph
+        /// This overload leaves relationshipTypes empty.
+        /// </summary>
+        /// <param name="word">Word for which to fetch examples</param>
+        /// <param name="useCanonical">If true will try to return the correct word root ('cats' -> 'cat'). If false returns exactly what was requested.</param>
+        /// <param name="limitPerRelationshipType">Restrict to the supplied relationship types</param>
+        /// <returns>A List of Related words in the the form of an async Task</returns>
+        public async Task<List<Related>> GetRelatedWords(string word, bool useCanonical, int limitPerRelationshipType) {
+            return await this.GetRelatedWords(word, "", useCanonical, limitPerRelationshipType);
+        }
+
+        /// <summary>
+        /// Given a word as a string, returns relationships from the Word Graph
+        /// </summary>
+        /// <param name="word">Word for which to fetch examples</param>
+        /// <param name="relationshipTypes">Limits the total results per type of relationship type.</param>
+        /// <param name="useCanonical">If true will try to return the correct word root ('cats' -> 'cat'). If false returns exactly what was requested.</param>
+        /// <param name="limitPerRelationshipType">Restrict to the supplied relationship types</param>
+        /// <returns>A List of Related words in the the form of an async Task</returns>
+        public async Task<List<Related>> GetRelatedWords(string word, string relationshipTypes, bool useCanonical, int limitPerRelationshipType){
+            if(word == null || String.IsNullOrWhiteSpace(word)){
+                throw new ArgumentException("Word argument cannot be null or empty.");
+            }
+            string resourcePath = "/word.{0}/{1}/relatedWords";
+            resourcePath = String.Format(resourcePath,"json",this.ToPathValue(word));
+
+            Dictionary<string,string> queryParams = new Dictionary<string,string>();
+            if(!String.IsNullOrWhiteSpace(relationshipTypes)){
+                queryParams.Add("relationshipTypes",this.ToPathValue(relationshipTypes));
+            }
+            if(useCanonical){
+                queryParams.Add("useCanonical","true");
+            }
+            if(limitPerRelationshipType > 0){
+                queryParams.Add("limitPerRelationshipType",limitPerRelationshipType.ToString());
+            }
+
+            ApiResponse response = await this.CallAPI(resourcePath,ApiMethod.GET,queryParams,null,null);
+            try {
+                return JsonConvert.DeserializeObject<List<Related>>(response.ResponseText);
+            }
+            catch (JsonException e) {
+                Console.Error.WriteLine("Wordnik WordApi JsonException caught: [{0}] {1}", e.HResult, e.Message);
+            }
+            return null;
+        }
     }
 }
