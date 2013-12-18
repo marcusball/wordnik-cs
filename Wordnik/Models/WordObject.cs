@@ -14,5 +14,6 @@ namespace Wordnik.Models {
         public string CanonicalForm { get; set; }
         public string Vulgar { get; set; }
         public bool Scrabble { get; set; }
+        public int LookupCount { get; set; }
     }
 }
