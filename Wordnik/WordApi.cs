@@ -18,6 +18,7 @@ namespace Wordnik {
         public WordApi(ApiClient api) : base(api) {
         }
 
+#region GetExamples Overloads
         /// <summary>
         /// Returns examples for a word.
         /// This overload sets includeDuplicates to false and useCanonical to true.
@@ -38,6 +39,7 @@ namespace Wordnik {
         public async Task<ExampleSearchResults> GetExamples(string word, bool includeDuplicates, bool useCanonical) {
             return await this.GetExamples(word,includeDuplicates,useCanonical,0,0);
         }
+#endregion 
 
         /// <summary>
         /// Returns examples for a word.
@@ -79,6 +81,7 @@ namespace Wordnik {
             return null;
         }
 
+#region GetWord Overloads
         /// <summary>
         /// Given a word as a string, returns the WordObject that represents it.
         /// Assumes useCanonical to be true and includeSuggestions to be False.
@@ -88,6 +91,8 @@ namespace Wordnik {
         public async Task<WordObject> GetWord(string word){
             return await this.GetWord(word,true,false);
         }
+#endregion
+
         /// <summary>
         /// Given a word as a string, returns the WordObject that represents it
         /// </summary>
@@ -120,6 +125,7 @@ namespace Wordnik {
             return null;
         }
 
+#region GetDefinitions Overloads
         /// <summary>
         /// Return definitions for a word
         /// This overload sends sourceDictionary and partOfSpeech as empty string, limit as zero, useCanonical as true, and includeTags as false.
@@ -229,7 +235,7 @@ namespace Wordnik {
         public async Task<List<Definition>> GetDefinitions(string word, string partOfSpeech, string sourceDictionaries, int limit) {
             return await this.GetDefinitions(word, partOfSpeech, sourceDictionaries, limit, true, false);
         }
-        
+#endregion
         
         /// <summary>
         /// Return definitions for a word
@@ -275,6 +281,7 @@ namespace Wordnik {
             return null;
         }
 
+#region GetTopExample Overloads
         /// <summary>
         /// Returns a top example for a word
         /// This overload will send useCanonical as true.
@@ -284,6 +291,7 @@ namespace Wordnik {
         public async Task<Example> GetTopExample(string word){
             return await this.GetTopExample(word,true);
         }
+#endregion
 
         /// <summary>
         /// Returns a top example for a word
@@ -313,6 +321,7 @@ namespace Wordnik {
             return null;
         }
 
+#region GetRelatedWords Overloads
         /// <summary>
         /// Given a word as a string, returns relationships from the Word Graph
         /// This overload leaves relationshipTypes empty, and sets useCanonical to true and limitPerRelationshipType to zero.
@@ -356,6 +365,7 @@ namespace Wordnik {
         public async Task<List<Related>> GetRelatedWords(string word, bool useCanonical, int limitPerRelationshipType) {
             return await this.GetRelatedWords(word, "", useCanonical, limitPerRelationshipType);
         }
+#endregion
 
         /// <summary>
         /// Given a word as a string, returns relationships from the Word Graph
@@ -392,5 +402,136 @@ namespace Wordnik {
             }
             return null;
         }
+
+        #region GetTextPronunciation Overloads
+        /// <summary>
+        /// Returns text pronunciations for a certain word
+        /// This overload sends useCanonical as true.
+        /// </summary>
+        /// <param name="word">Word for which to fetch pronunciations</param>
+        /// <returns>Returns a List of TextPron objects in the form of an async Task</returns>
+        public async Task<List<TextPron>> GetTextPronunciations(string word){
+            return await this.GetTextPronunciations(word,"","",true,0);
+        }
+
+        /// <summary>
+        /// Returns text pronunciations for a certain word
+        /// This overload sends useCanonical as true.
+        /// </summary>
+        /// <param name="word">Word for which to fetch pronunciations</param>
+        /// <param name="sourceDictionary">Get from a single dictionary</param>
+        /// <returns>Returns a List of TextPron objects in the form of an async Task</returns>
+        public async Task<List<TextPron>> GetTextPronunciations(string word, string sourceDictionary){
+            return await this.GetTextPronunciations(word,sourceDictionary,"",true,0);
+        }
+
+        /// <summary>
+        /// Returns text pronunciations for a certain word
+        /// </summary>
+        /// <param name="word">Word for which to fetch pronunciations</param>
+        /// <param name="useCanonical">If true will try to return a correct word root ('cats' -> 'cat'). If false returns exactly what was requested.</param>
+        /// <returns>Returns a List of TextPron objects in the form of an async Task</returns>
+        public async Task<List<TextPron>> GetTextPronunciations(string word, bool useCanonical){
+            return await this.GetTextPronunciations(word,"","",useCanonical,0);
+        }
+
+        /// <summary>
+        /// Returns text pronunciations for a certain word
+        /// This overload sends useCanonical as true.
+        /// </summary>
+        /// <param name="word">Word for which to fetch pronunciations</param>
+        /// <param name="limit">Maximum number of results to return</param>
+        /// <returns>Returns a List of TextPron objects in the form of an async Task</returns>
+        public async Task<List<TextPron>> GetTextPronunciations(string word, int limit){
+            return await this.GetTextPronunciations(word,"","",true,limit);
+        }
+
+        /// <summary>
+        /// Returns text pronunciations for a certain word
+        /// </summary>
+        /// <param name="word">Word for which to fetch pronunciations</param>
+        /// <param name="useCanonical">If true will try to return a correct word root ('cats' -> 'cat'). If false returns exactly what was requested.</param>
+        /// <param name="limit">Maximum number of results to return</param>
+        /// <returns>Returns a List of TextPron objects in the form of an async Task</returns>
+        public async Task<List<TextPron>> GetTextPronunciations(string word, bool useCanonical, int limit){
+            return await this.GetTextPronunciations(word,"","",useCanonical,limit);
+        }
+
+        /// <summary>
+        /// Returns text pronunciations for a certain word
+        /// </summary>
+        /// <param name="word">Word for which to fetch pronunciations</param>
+        /// <param name="sourceDictionary">Get from a single dictionary</param>
+        /// <param name="useCanonical">If true will try to return a correct word root ('cats' -> 'cat'). If false returns exactly what was requested.</param>
+        /// <returns>Returns a List of TextPron objects in the form of an async Task</returns>
+        public async Task<List<TextPron>> GetTextPronunciations(string word, string sourceDictionary, bool useCanonical){
+            return await this.GetTextPronunciations(word,sourceDictionary,"",useCanonical,0);
+        }
+
+        /// <summary>
+        /// Returns text pronunciations for a certain word
+        /// This overload sends useCanonical as true.
+        /// </summary>
+        /// <param name="word">Word for which to fetch pronunciations</param>
+        /// <param name="sourceDictionary">Get from a single dictionary</param>
+        /// <param name="limit">Maximum number of results to return</param>
+        /// <returns>Returns a List of TextPron objects in the form of an async Task</returns>
+        public async Task<List<TextPron>> GetTextPronunciations(string word, string sourceDictionary, int limit){
+            return await this.GetTextPronunciations(word,sourceDictionary,"",true,limit);
+        }
+
+        /// <summary>
+        /// Returns text pronunciations for a certain word
+        /// </summary>
+        /// <param name="word">Word for which to fetch pronunciations</param>
+        /// <param name="sourceDictionary">Get from a single dictionary</param>
+        /// <param name="useCanonical">If true will try to return a correct word root ('cats' -> 'cat'). If false returns exactly what was requested.</param>
+        /// <param name="limit">Maximum number of results to return</param>
+        /// <returns>Returns a List of TextPron objects in the form of an async Task</returns>
+        public async Task<List<TextPron>> GetTextPronunciations(string word, string sourceDictionary, bool useCanonical, int limit){
+            return await this.GetTextPronunciations(word,sourceDictionary,"",useCanonical,limit);
+        }
+        #endregion
+
+        /// <summary>
+        /// Returns text pronunciations for a certain word
+        /// </summary>
+        /// <param name="word">Word for which to fetch pronunciations</param>
+        /// <param name="sourceDictionary">Get from a single dictionary</param>
+        /// <param name="typeFormat">Text pronunciation type</param>
+        /// <param name="useCanonical">If true will try to return a correct word root ('cats' -> 'cat'). If false returns exactly what was requested.</param>
+        /// <param name="limit">Maximum number of results to return</param>
+        /// <returns>Returns a List of TextPron objects in the form of an async Task</returns>
+        public async Task<List<TextPron>> GetTextPronunciations(string word, string sourceDictionary, string typeFormat, bool useCanonical, int limit){
+            if(word == null || String.IsNullOrWhiteSpace(word)){
+                throw new ArgumentException("Word argument cannot be null or empty.");
+            }
+            string resourcePath = "/word.{0}/{1}/pronunciations";
+            resourcePath = String.Format(resourcePath,"json",this.ToPathValue(word));
+
+            Dictionary<string,string> queryParams = new Dictionary<string,string>();
+            if(!String.IsNullOrWhiteSpace(typeFormat)){
+                queryParams.Add("typeFormat",this.ToPathValue(typeFormat));
+            }
+            if(!String.IsNullOrWhiteSpace(sourceDictionary)){
+                queryParams.Add("sourceDictionary",this.ToPathValue(sourceDictionary));
+            }
+            if(useCanonical){
+                queryParams.Add("useCanonical","true");
+            }
+            if(limit > 0){
+                queryParams.Add("limit",limit.ToString());
+            }
+
+            ApiResponse response = await this.CallAPI(resourcePath,ApiMethod.GET,queryParams,null,null);
+            try {
+                return JsonConvert.DeserializeObject<List<TextPron>>(response.ResponseText);
+            }
+            catch (JsonException e) {
+                Console.Error.WriteLine("Wordnik WordApi JsonException caught: [{0}] {1}", e.HResult, e.Message);
+            }
+            return null;
+        }
     }
 }
+

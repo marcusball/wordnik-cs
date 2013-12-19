@@ -60,6 +60,7 @@
     <Compile Include="Models\Related.cs" />
     <Compile Include="Models\ScoredWord.cs" />
     <Compile Include="Models\Sentence.cs" />
+    <Compile Include="Models\TextPron.cs" />
     <Compile Include="Models\WordObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WordApi.cs" />

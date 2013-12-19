@@ -12,7 +12,7 @@ namespace WordnikTest {
         static void Main(string[] args) {
             WordApi test = new WordApi(myAPIkey, "http://api.wordnik.com/v4");
 
-            var output1 = test.GetRelatedWords("giant");
+            var output1 = test.GetTextPronunciations("vagina");
             output1.ContinueWith((t) => {
                 var output = t.Result;
             });
